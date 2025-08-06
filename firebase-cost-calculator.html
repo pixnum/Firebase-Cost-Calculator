@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Firebase AI Art App Cost Calculator</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    h1 { font-size: 22px; }
+    input[type=number] { width: 80px; }
+    .section { margin-bottom: 20px; }
+    .label { display: inline-block; width: 200px; }
+    #total { font-weight: bold; font-size: 18px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>🧮 Firebase AI Art Generator Cost Calculator</h1>
+
+  <div class="section">
+    <label class="label">🖼️ Images Generated:</label>
+    <input type="number" id="images" value="500" />
+  </div>
+
+  <div class="section">
+    <label class="label">💸 Replicate Cost/image ($):</label>
+    <input type="number" id="replicateRate" step="0.001" value="0.015" />
+  </div>
+
+  <div class="section">
+    <label class="label">⚙️ Cloud Function Calls:</label>
+    <input type="number" id="functions" value="500" />
+  </div>
+
+  <div class="section">
+    <label class="label">☁️ Hosting Bandwidth (GB):</label>
+    <input type="number" id="hostingGB" value="10" />
+  </div>
+
+  <div class="section">
+    <label class="label">🧠 Google Vision API Calls:</label>
+    <input type="number" id="vision" value="500" />
+  </div>
+
+  <div class="section">
+    <label class="label">📦 Storage Used (GB):</label>
+    <input type="number" id="storageGB" value="2" />
+  </div>
+
+  <div id="total">Monthly Cost: ₹0</div>
+
+  <script>
+    const INR_PER_USD = 84;
+
+    function calculate() {
+      const images = +document.getElementById('images').value;
+      const replicateRate = +document.getElementById('replicateRate').value;
+      const functions = +document.getElementById('functions').value;
+      const hostingGB = +document.getElementById('hostingGB').value;
+      const vision = +document.getElementById('vision').value;
+      const storageGB = +document.getElementById('storageGB').value;
+
+      const replicateCost = images * replicateRate * INR_PER_USD;
+      const functionCost = functions * 0.0004 * INR_PER_USD; // ₹0.034 approx per function
+      const hostingCost = hostingGB * 0.15 * INR_PER_USD;
+      const visionFree = 1000;
+      const visionPaid = Math.max(0, vision - visionFree);
+      const visionCost = (visionPaid / 1000) * 1.5 * INR_PER_USD;
+      const storageCost = storageGB * 0.026 * INR_PER_USD;
+
+      const total = replicateCost + functionCost + hostingCost + visionCost + storageCost;
+      document.getElementById('total').innerText = 'Monthly Cost: ₹' + total.toFixed(2);
+    }
+
+    document.querySelectorAll("input").forEach(input => {
+      input.addEventListener("input", calculate);
+    });
+
+    calculate();
+  </script>
+</body>
+</html>
