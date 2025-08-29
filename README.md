@@ -1,2 +1,2 @@
-# Firebase-AI-Art-Generator-Cost-Calculator
+# Firebase-Cost-Calculator
 Calculate your Firebase Studio Profect Expenses
